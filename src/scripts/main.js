@@ -4,28 +4,23 @@
 const logo = document.getElementsByClassName('logo')[0];
 const message = document.createElement('div');
 
-message.setAttribute('class', 'message');
+message.className = 'message';
 
-function createPromise() {
-  return new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(() => {
-      message.classList.add('error-message');
-      reject(new Error('Promise was rejected!'));
-      document.body.append(message);
-    }, 3000);
-
-    logo.addEventListener('click', () => {
-      resolve('Promise was resolved!');
-      document.body.append(message);
-      clearTimeout(timeout);
-    });
+const promise1 = new Promise((resolve) => {
+  logo.addEventListener('click', () => {
+    resolve('Promise was resolved!');
   });
-}
+});
+const promise2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject(new Error('Promise was rejected!'));
+  }, 3000);
+});
 
-createPromise()
-  .then((success) => {
-    message.textContent = success;
-  })
+Promise.race([promise1, promise2])
+  .then((success) => (message.textContent = success))
   .catch((err) => {
+    message.classList.add('error-message');
     message.textContent = err.message;
-  });
+  })
+  .finally(() => document.body.append(message));
