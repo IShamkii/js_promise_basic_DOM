@@ -1,0 +1,2 @@
+var e=document.getElementsByClassName("logo")[0],n=document.createElement("div");n.className="message",Promise.race([new Promise(function(n){e.addEventListener("click",function(){n("Promise was resolved!")})}),new Promise(function(e,n){setTimeout(function(){n(Error("Promise was rejected!"))},3e3)})]).then(function(e){return n.textContent=e}).catch(function(e){n.classList.add("error-message"),n.textContent=e.message}).finally(function(){return document.body.append(n)});
+//# sourceMappingURL=index.f0b6bff5.js.map
